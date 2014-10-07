@@ -113,8 +113,8 @@ public class Cocos2dxRenderer implements GLSurfaceView.Renderer {
 	// Methods
 	// ===========================================================
 
-	private static native void nativeTouchesBegin(final int pID, final float pX, final float pY);
-	private static native void nativeTouchesEnd(final int pID, final float pX, final float pY);
+	public static native void nativeTouchesBegin(final int pID, final float pX, final float pY);
+	public static native void nativeTouchesEnd(final int pID, final float pX, final float pY);
 	private static native void nativeTouchesMove(final int[] pIDs, final float[] pXs, final float[] pYs);
 	private static native void nativeTouchesCancel(final int[] pIDs, final float[] pXs, final float[] pYs);
 	private static native boolean nativeKeyDown(final int pKeyCode);

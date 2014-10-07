@@ -60,7 +60,7 @@ public class Cocos2dxHelper {
 	private static boolean sActivityVisible;
 	private static String sPackageName;
 	private static String sFileDirectory;
-	private static Activity sActivity = null;
+	private static Context sActivity = null;
 	private static Cocos2dxHelperListener sCocos2dxHelperListener;
 	private static Set<OnActivityResultListener> onActivityResultListeners = new LinkedHashSet<OnActivityResultListener>();
 
@@ -99,7 +99,32 @@ public class Cocos2dxHelper {
 	    }
 	}
 	
-    public static Activity getActivity() {
+	public static void init(final Context activity,final Cocos2dxHelperListener listener) {
+	    if (!sInited) {
+    		final ApplicationInfo applicationInfo = activity.getApplicationInfo();
+    		
+            Cocos2dxHelper.sCocos2dxHelperListener = listener;
+                    
+    		Cocos2dxHelper.sPackageName = applicationInfo.packageName;
+    		Cocos2dxHelper.sFileDirectory = activity.getFilesDir().getAbsolutePath();
+            Cocos2dxHelper.nativeSetApkPath(applicationInfo.sourceDir);
+    
+    		Cocos2dxHelper.sCocos2dxAccelerometer = new Cocos2dxAccelerometer(activity);
+    		Cocos2dxHelper.sCocos2dMusic = new Cocos2dxMusic(activity);
+    		Cocos2dxHelper.sCocos2dSound = new Cocos2dxSound(activity);
+    		Cocos2dxHelper.sAssetManager = activity.getAssets();
+    		Cocos2dxHelper.nativeSetContext((Context)activity, Cocos2dxHelper.sAssetManager);
+    
+            Cocos2dxBitmap.setContext(activity);
+            Cocos2dxETCLoader.setContext(activity);
+            sActivity = activity;
+
+            sInited = true;
+
+	    }
+	}
+	
+    public static Context getActivity() {
         return sActivity;
     }
     
@@ -308,17 +333,8 @@ public class Cocos2dxHelper {
     {
 		if (sActivity != null)
 		{
-			DisplayMetrics metrics = new DisplayMetrics();
-			WindowManager wm = sActivity.getWindowManager();
-			if (wm != null)
-			{
-				Display d = wm.getDefaultDisplay();
-				if (d != null)
-				{
-					d.getMetrics(metrics);
-					return (int)(metrics.density*160.0f);
-				}
-			}
+			DisplayMetrics metrics = sActivity.getResources().getDisplayMetrics();
+			return (int) (metrics.density * 160.0f);
 		}
 		return -1;
     }
