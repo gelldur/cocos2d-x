@@ -18,6 +18,15 @@
 -- @return bool#bool ret (return value: bool)
         
 --------------------------------
+-- @overload self, string, char         
+-- @overload self, string, string         
+-- @function [parent=#SkeletonRenderer] setAttachment
+-- @param self
+-- @param #string slotName
+-- @param #string attachmentName
+-- @return bool#bool ret (return value: bool)
+
+--------------------------------
 -- 
 -- @function [parent=#SkeletonRenderer] setBonesToSetupPose 
 -- @param self
